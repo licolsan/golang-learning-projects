@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+
+  db:
+    image: postgres:12.0-alpine
+    container_name: licolsan_learning_postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - 5432:5432
+
+  orm:
+    image: golang:1.13.4-alpine3.10
+    container_name: licolsan_learning_postgres_orm
+    tty: true
+    volumes:
+      - ./:/app
+
+  pgadmin:
+    image: dpage/pgadmin4:4.14
+    container_name: licolsan_learning_postgres_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: true
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 10
+    ports:
+      - 83:80
+      - 443:443
+
+networks:
+  default:
+    external:
+      name: licolsan-learning-network
