@@ -10,11 +10,16 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./db_files:/var/lib/postgresql
     ports:
       - 5432:5432
 
   orm:
-    image: golang:1.13.4-alpine3.10
+    image: licolsan_learning_postgres_orm:dev-local
+    build:
+      context: .
+      dockerfile: ./dockers/orm.Dockerfile
     container_name: licolsan_learning_postgres_orm
     tty: true
     volumes:
@@ -29,7 +34,6 @@ services:
       PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 10
     ports:
       - 83:80
-      - 443:443
 
 networks:
   default:

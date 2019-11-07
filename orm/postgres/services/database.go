@@ -20,11 +20,6 @@ func LoadDB() *gorm.DB {
 		dbPassword string = os.Getenv("DB_PASSWORD")
 	)
 
-	// db, err := gorm.Open(
-	// 	dbType,
-	// 	"host=myhost port=myport user=gorm dbname=gorm password=mypassword"
-	// )
-
 	fmt.Println("dbType", dbType)
 	fmt.Println("dbHost", dbHost)
 	fmt.Println("dbPort", dbPort)
@@ -35,7 +30,7 @@ func LoadDB() *gorm.DB {
 	db, err := gorm.Open(
 		dbType,
 		fmt.Sprintf(
-			"host=%v port=%v user=%v dbname=%v password=%v",
+			"host=%v port=%v user=%v dbname=%v password=%v sslmode=disable",
 			dbHost, dbPort, dbUser, dbName, dbPassword,
 		),
 	)
