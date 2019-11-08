@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+
+  db:
+    image: mysql:5.7
+    container_name: licolsan_learning_mysql_db
+    restart: always
+    environment:
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - ./db_files:/var/lib/mysql
+    ports:
+      - 3306:3306
+      - 33060:33060
+
+  orm:
+    image: licolsan_learning_mysql_orm:dev-local
+    build:
+      context: .
+      dockerfile: ./dockers/orm.Dockerfile
+    container_name: licolsan_learning_mysql_orm
+    tty: true
+    volumes:
+      - ./:/app
+
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin:4.7
+  #   container_name: licolsan_learning_mysql_phpmyadmin
+  #   environment:
+  #     PMA_HOSTS: db:3306
+  #     # PMA_PORT: "3306"
+  #     # PMA_USER: ${MYSQL_USER}
+  #     # PMA_PASSWORD: ${MYSQL_PASSWORD}
+  #     # MYSQL_USER: ${DB_USER}
+  #     # MYSQL_PASSWORD: ${DB_PASSWORD}
+  #     # MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+  #     # PMA_ARBITRARY: "1"
+  #   ports:
+  #     - 84:80
+  #     - 9000:9000
+
+networks:
+  default:
+    external:
+      name: licolsan-learning-network
