@@ -2,12 +2,15 @@ package services
 
 import (
 	"fmt"
-	"log"
+	"licolsan-postgres/models"
 	"os"
 
+	"github.com/alexcesaro/log/stdlog"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
+
+var logger = stdlog.GetFromFlags()
 
 func LoadDB() *gorm.DB {
 
@@ -20,13 +23,6 @@ func LoadDB() *gorm.DB {
 		dbPassword string = os.Getenv("DB_PASSWORD")
 	)
 
-	fmt.Println("dbType", dbType)
-	fmt.Println("dbHost", dbHost)
-	fmt.Println("dbPort", dbPort)
-	fmt.Println("dbUser", dbUser)
-	fmt.Println("dbName", dbName)
-	fmt.Println("dbPassword", dbPassword)
-
 	db, err := gorm.Open(
 		dbType,
 		fmt.Sprintf(
@@ -35,7 +31,16 @@ func LoadDB() *gorm.DB {
 		),
 	)
 	if err != nil {
-		log.Fatal("Error when loading database: ", err)
+		logger.Error("Error when loading database: ", err)
+	} else {
+		logger.Info("Database loaded")
 	}
+
+	db.AutoMigrate(&models.Product{})
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Profile{})
+
+	db.LogMode(true)
+
 	return db
 }
