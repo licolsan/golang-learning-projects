@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+  dynamodb_db:
+    image: amazon/dynamodb-local:1.11.477
+    command: -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+    container_name: licolsan_learning_dynamodb_db
+    restart: always
+    ports:
+      - 8000:8000
+
+  dynamod_manager:
+    image: taydy/dynamodb-manager
+    container_name: licolsan_learning_dynamodb_manager
+    restart: always
+    ports:
+      - 85:80
+
+networks:
+  default:
+    external:
+      name: licolsan-learning-network
