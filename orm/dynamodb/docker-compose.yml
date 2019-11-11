@@ -10,7 +10,7 @@ services:
     ports:
       - 8000:8000
 
-  dynamod_manager:
+  dynamodb_manager:
     image: taydy/dynamodb-manager
     container_name: licolsan_learning_dynamodb_manager
     restart: always
